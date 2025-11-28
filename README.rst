@@ -2,6 +2,12 @@
 Django REST Framework JSON PascalCase
 =====================================
 
+.. image:: https://img.shields.io/pypi/v/djangorestframework-pascal-case.svg
+    :target: https://pypi.org/project/djangorestframework-pascal-case/
+
+.. image:: https://img.shields.io/pypi/pyversions/djangorestframework-pascal-case.svg
+    :target: https://pypi.org/project/djangorestframework-pascal-case/
+
 PascalCase JSON support for Django REST framework.
 
 This library is a fork of `djangorestframework-camel-case <https://github.com/vbabiy/djangorestframework-camel-case>`_
@@ -12,9 +18,9 @@ APIs that need to be compatible with .NET clients or frontends that expect Pasca
 Installation
 ============
 
-Install from the local package::
+At the command line::
 
-    $ pip install -e ./djangorestframework-pascal-case
+    $ pip install djangorestframework-pascal-case
 
 Add the render and parser to your django settings file.
 

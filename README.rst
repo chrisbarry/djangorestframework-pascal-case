@@ -1,22 +1,20 @@
-====================================
-Django REST Framework JSON CamelCase
-====================================
+=====================================
+Django REST Framework JSON PascalCase
+=====================================
 
-.. image:: https://travis-ci.org/vbabiy/djangorestframework-camel-case.svg?branch=master
-        :target: https://travis-ci.org/vbabiy/djangorestframework-camel-case
+PascalCase JSON support for Django REST framework.
 
-.. image:: https://badge.fury.io/py/djangorestframework-camel-case.svg
-    :target: https://badge.fury.io/py/djangorestframework-camel-case
-
-Camel case JSON support for Django REST framework.
+This library is a fork of `djangorestframework-camel-case <https://github.com/vbabiy/djangorestframework-camel-case>`_
+by Vitaly Babiy, modified to output PascalCase instead of camelCase. This is useful for
+APIs that need to be compatible with .NET clients or frontends that expect PascalCase JSON keys.
 
 ============
 Installation
 ============
 
-At the command line::
+Install from the local package::
 
-    $ pip install djangorestframework-camel-case
+    $ pip install -e ./djangorestframework-pascal-case
 
 Add the render and parser to your django settings file.
 
@@ -26,16 +24,16 @@ Add the render and parser to your django settings file.
     REST_FRAMEWORK = {
 
         'DEFAULT_RENDERER_CLASSES': (
-            'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
-            'djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer',
+            'djangorestframework_pascal_case.render.PascalCaseJSONRenderer',
+            'djangorestframework_pascal_case.render.PascalCaseBrowsableAPIRenderer',
             # Any other renders
         ),
 
         'DEFAULT_PARSER_CLASSES': (
-            # If you use MultiPartFormParser or FormParser, we also have a camel case version
-            'djangorestframework_camel_case.parser.CamelCaseFormParser',
-            'djangorestframework_camel_case.parser.CamelCaseMultiPartParser',
-            'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+            # If you use MultiPartFormParser or FormParser, we also have a pascal case version
+            'djangorestframework_pascal_case.parser.PascalCaseFormParser',
+            'djangorestframework_pascal_case.parser.PascalCaseMultiPartParser',
+            'djangorestframework_pascal_case.parser.PascalCaseJSONParser',
             # Any other parsers
         ),
     }
@@ -48,7 +46,7 @@ Add query param middleware to django settings file.
     # ...
     MIDDLEWARE = [
         # Any other middleware
-        'djangorestframework_camel_case.middleware.CamelCaseMiddleWare',
+        'djangorestframework_pascal_case.middleware.PascalCaseMiddleWare',
     ]
     # ...
 
@@ -61,14 +59,13 @@ to use another renderer, the two possible are:
 
 `drf_orjson_renderer.renderers.ORJSONRenderer` or
 `drf_ujson.renderers.UJSONRenderer` or
-`rest_framework.renderers.UnicodeJSONRenderer` for DRF < 3.0,specify it in your django
-settings file.
+`rest_framework.renderers.UnicodeJSONRenderer` for DRF < 3.0, specify it in your django
 settings file.
 
 .. code-block:: python
 
     # ...
-    JSON_CAMEL_CASE = {
+    JSON_PASCAL_CASE = {
         'RENDERER_CLASS': 'drf_orjson_renderer.renderers.ORJSONRenderer'
     }
     # ...
@@ -87,19 +84,19 @@ there are two conventions of snake case.
 .. code-block:: text
 
     # Case 1 (Package default)
-    v2Counter -> v_2_counter
-    fooBar2 -> foo_bar_2
+    V2Counter -> v_2_counter
+    FooBar2 -> foo_bar_2
 
     # Case 2
-    v2Counter -> v2_counter
-    fooBar2 -> foo_bar2
+    V2Counter -> v2_counter
+    FooBar2 -> foo_bar2
 
 
 By default, the package uses the first case. To use the second case, specify it in your django settings file.
 
 .. code-block:: python
 
-    REST_FRAMEWORK = {
+    JSON_PASCAL_CASE = {
         # ...
         'JSON_UNDERSCOREIZE': {
             'no_underscore_before_number': True,
@@ -111,16 +108,16 @@ Alternatively, you can change this behavior on a class level by setting `json_un
 
 .. code-block:: python
 
-    from djangorestframework_camel_case.parser import CamelCaseJSONParser
+    from djangorestframework_pascal_case.parser import PascalCaseJSONParser
     from rest_framework.generics import CreateAPIView
 
-    class NoUnderscoreBeforeNumberCamelCaseJSONParser(CamelCaseJSONParser):
+    class NoUnderscoreBeforeNumberPascalCaseJSONParser(PascalCaseJSONParser):
         json_underscoreize = {'no_underscore_before_number': True}
 
     class MyView(CreateAPIView):
         queryset = MyModel.objects.all()
         serializer_class = MySerializer
-        parser_classes = (NoUnderscoreBeforeNumberCamelCaseJSONParser,)
+        parser_classes = (NoUnderscoreBeforeNumberPascalCaseJSONParser,)
 
 =============
 Ignore Fields
@@ -138,13 +135,13 @@ Would become:
 
 .. code-block:: python
 
-    {"myKey": {"doNotChange": 1}}
+    {"MyKey": {"DoNotChange": 1}}
 
 However, if you set in your settings:
 
 .. code-block:: python
 
-    REST_FRAMEWORK = {
+    JSON_PASCAL_CASE = {
         # ...
         "JSON_UNDERSCOREIZE": {
             # ...
@@ -158,7 +155,7 @@ The `my_key` field would not have its data changed:
 
 .. code-block:: python
 
-    {"myKey": {"do_not_change": 1}}
+    {"MyKey": {"do_not_change": 1}}
 
 ===========
 Ignore Keys
@@ -176,13 +173,13 @@ Would become:
 
 .. code-block:: python
 
-    {"unchangingKey": {"changeMe": 1}}
+    {"UnchangingKey": {"ChangeMe": 1}}
 
 However, if you set in your settings:
 
 .. code-block:: python
 
-    REST_FRAMEWORK = {
+    JSON_PASCAL_CASE = {
         # ...
         "JSON_UNDERSCOREIZE": {
             # ...
@@ -196,7 +193,7 @@ The `unchanging_key` field would not be renamed:
 
 .. code-block:: python
 
-    {"unchanging_key": {"changeMe": 1}}
+    {"unchanging_key": {"ChangeMe": 1}}
 
 ignore_keys and ignore_fields can be applied to the same key if required.
 
@@ -204,10 +201,17 @@ ignore_keys and ignore_fields can be applied to the same key if required.
 Running Tests
 =============
 
-To run the current test suite, execute the following from the root of he project::
+To run the current test suite, execute the following from the root of the project::
 
     $ python -m unittest discover
 
+
+=======
+Credits
+=======
+
+This library is a fork of `djangorestframework-camel-case <https://github.com/vbabiy/djangorestframework-camel-case>`_
+by Vitaly Babiy (vbabiy86@gmail.com).
 
 =======
 License

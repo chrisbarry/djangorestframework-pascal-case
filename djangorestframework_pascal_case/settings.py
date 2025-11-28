@@ -3,7 +3,8 @@ from django.core.exceptions import ImproperlyConfigured
 
 from rest_framework.settings import APISettings
 
-USER_SETTINGS = getattr(settings, "JSON_CAMEL_CASE", {})
+# Support both JSON_PASCAL_CASE and JSON_CAMEL_CASE for backwards compatibility
+USER_SETTINGS = getattr(settings, "JSON_PASCAL_CASE", None) or getattr(settings, "JSON_CAMEL_CASE", {})
 
 DEFAULTS = {
     "RENDERER_CLASS": "rest_framework.renderers.JSONRenderer",

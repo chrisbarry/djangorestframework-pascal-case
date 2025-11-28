@@ -9,11 +9,12 @@ from rest_framework.exceptions import ParseError
 from rest_framework.parsers import MultiPartParser, DataAndFiles
 from rest_framework.parsers import FormParser
 
-from djangorestframework_camel_case.settings import api_settings
-from djangorestframework_camel_case.util import underscoreize
+from djangorestframework_pascal_case.settings import api_settings
+from djangorestframework_pascal_case.util import underscoreize
 
 
-class CamelCaseJSONParser(api_settings.PARSER_CLASS):
+class PascalCaseJSONParser(api_settings.PARSER_CLASS):
+    """Parser that converts incoming PascalCase JSON keys to underscore_case."""
     json_underscoreize = api_settings.JSON_UNDERSCOREIZE
 
     def parse(self, stream, media_type=None, parser_context=None):
@@ -27,9 +28,9 @@ class CamelCaseJSONParser(api_settings.PARSER_CLASS):
             raise ParseError("JSON parse error - %s" % str(exc))
 
 
-class CamelCaseFormParser(FormParser):
+class PascalCaseFormParser(FormParser):
     """
-    Parser for form data.
+    Parser for form data that converts PascalCase keys to underscore_case.
     """
 
     def parse(self, stream, media_type=None, parser_context=None):
@@ -39,9 +40,10 @@ class CamelCaseFormParser(FormParser):
         )
 
 
-class CamelCaseMultiPartParser(MultiPartParser):
+class PascalCaseMultiPartParser(MultiPartParser):
     """
     Parser for multipart form data, which may include file data.
+    Converts PascalCase keys to underscore_case.
     """
 
     media_type = "multipart/form-data"
@@ -70,3 +72,9 @@ class CamelCaseMultiPartParser(MultiPartParser):
             )
         except MultiPartParserError as exc:
             raise ParseError("Multipart form parse error - %s" % str(exc))
+
+
+# Aliases for backwards compatibility
+CamelCaseJSONParser = PascalCaseJSONParser
+CamelCaseFormParser = PascalCaseFormParser
+CamelCaseMultiPartParser = PascalCaseMultiPartParser

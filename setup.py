@@ -13,31 +13,31 @@ if sys.argv[-1] == "publish":
 
 readme = open("README.rst").read()
 history = open("HISTORY.rst").read().replace(".. :changelog:", "")
-import djangorestframework_camel_case
+import djangorestframework_pascal_case
 
 def extract_requires():
     with Path('requirements.txt').open() as reqs:
         return [req.strip() for req in reqs if not req.startswith(("#", "--", "-r")) and req.strip()]
 
 setup(
-    name="djangorestframework-camel-case",
-    version=djangorestframework_camel_case.__version__,
-    description="Camel case JSON support for Django REST framework.",
+    name="djangorestframework-pascal-case",
+    version=djangorestframework_pascal_case.__version__,
+    description="PascalCase JSON support for Django REST framework.",
     long_description=readme + "\n\n" + history,
     long_description_content_type="text/x-rst",
-    author="Vitaly Babiy",
-    author_email="vbabiy86@gmail.com",
-    url="https://github.com/vbabiy/djangorestframework-camel-case",
-    packages=["djangorestframework_camel_case"],
-    package_dir={"djangorestframework_camel_case": "djangorestframework_camel_case"},
+    author="Avoca",
+    author_email="",
+    url="https://github.com/avoca/djangorestframework-pascal-case",
+    packages=["djangorestframework_pascal_case"],
+    package_dir={"djangorestframework_pascal_case": "djangorestframework_pascal_case"},
     include_package_data=True,
     python_requires=">=3.7",
     install_requires=extract_requires(),
     license="BSD",
     zip_safe=False,
-    keywords="djangorestframework_camel_case",
+    keywords="djangorestframework_pascal_case",
     classifiers=[
-        "Development Status :: 2 - Pre-Alpha",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
         "Natural Language :: English",

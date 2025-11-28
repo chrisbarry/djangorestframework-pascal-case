@@ -5,9 +5,10 @@ Credits
 Development Lead
 ----------------
 
-* Vitaly Babiy <vbabiy86@gmail.com>
+* Chris
 
-Contributors
-------------
+Original Library
+----------------
 
-None yet. Why not be the first?
+This is a fork of `djangorestframework-camel-case <https://github.com/vbabiy/djangorestframework-camel-case>`_
+by Vitaly Babiy <vbabiy86@gmail.com>.
